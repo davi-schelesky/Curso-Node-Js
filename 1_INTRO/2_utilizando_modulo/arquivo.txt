@@ -1,0 +1,1 @@
+Olá, lendo o texto de outro arquivo através do fs
