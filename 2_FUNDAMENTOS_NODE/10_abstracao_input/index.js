@@ -1,3 +1,6 @@
+//Maneira de captar respostas do usuário de
+//forma mais fácil que os core modules do node
+
 import inquirer from 'inquirer'
 
 inquirer.prompt([{

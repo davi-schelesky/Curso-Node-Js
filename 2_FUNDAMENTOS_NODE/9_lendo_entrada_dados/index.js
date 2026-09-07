@@ -1,3 +1,6 @@
+// Maneira de captar respostas do usuário
+//com um core module do node
+
 const readline = require('readline').createInterface({
     input: process.stdin,
     output: process.stdout
