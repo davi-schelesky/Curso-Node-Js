@@ -1,0 +1,52 @@
+const express = require('express')
+const exphbs = require('express-handlebars')
+const conn = require('./db/conn');
+
+// Importa o modelo q será utilizado no db
+const User = require('./models/User')
+
+const app = express();
+
+// Config para ter acesso ao body da req em JSON
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+)
+app.use(express.json());
+
+app.engine('handlebars', exphbs.engine());
+app.set('view engine', 'handlebars');
+app.use(express.static('public'));
+
+app.get('/', (req, res) => {
+    res.render('home');
+})
+
+app.get('/users/create', (req, res) => {
+    res.render('addUser');
+})
+
+app.post('/users/create', async(req, res) => {
+    const name = req.body.name;
+    const occupation = req.body.occupation;
+    let nesLetter = req.body.newsLetter;
+
+    if(nesLetter === 'on') {
+        nesLetter = true;
+    } else {
+        nesLetter = false;
+    }
+
+    // Cria os campos com os dados recebidos (a parte de segurança é feita automaticamente pelo sequelize)
+    await User.create({name, occupation, nesLetter});
+    
+    res.redirect('/');
+})
+
+//Executa a conexão com o banco logo quando o server é iniciado
+//não iniciando se a conexão não acontecer
+conn.sync().then(() => {
+    app.listen(3000);
+    console.log("Server rodando na porta 3000!");
+}).catch((error) => console.log(error));
